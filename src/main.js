@@ -1,5 +1,6 @@
 import loadGmapApi from './manager/initializer'
 import promiseLazyFactory from './factories/promise-lazy'
+import { reactive } from 'vue';
 
 import KmlLayer from './components/kml-layer'
 import Marker from './components/marker'
@@ -38,7 +39,7 @@ export {
   MountableMixin, StreetViewPanorama
 }
 
-export function install (Vue, options) {
+export function install (app, options) {
   // Set defaults
   options = {
     installComponents: true,
@@ -51,9 +52,10 @@ export function install (Vue, options) {
   // via:
   //   import {gmapApi} from 'vue2-google-maps'
   //   export default {  computed: { google: gmapApi }  }
-  GmapApi = new Vue({ data: { gmapApi: null } })
+  GmapApi = reactive({ data: { gmapApi: null } })
 
-  const defaultResizeBus = new Vue()
+  // TODO: replace event bus pattern
+  // const defaultResizeBus = new Vue()
 
   // Use a lazy to only load the API when
   // a VGM component is loaded
@@ -68,21 +70,21 @@ export function install (Vue, options) {
     }
   })
 
-  Vue.$gmapDefaultResizeBus = defaultResizeBus
-  Vue.$gmapApiPromiseLazy = gmapApiPromiseLazy
+  app.$gmapDefaultResizeBus = defaultResizeBus
+  app.$gmapApiPromiseLazy = gmapApiPromiseLazy
 
   if (options.installComponents) {
-    Vue.component('GmapMap', Map)
-    Vue.component('GmapMarker', Marker)
-    Vue.component('GmapInfoWindow', InfoWindow)
-    Vue.component('GmapKmlLayer', KmlLayer)
-    Vue.component('GmapPolyline', Polyline)
-    Vue.component('GmapPolygon', Polygon)
-    Vue.component('GmapCircle', Circle)
-    Vue.component('GmapRectangle', Rectangle)
-    Vue.component('GmapAutocomplete', Autocomplete)
-    Vue.component('GmapPlaceInput', PlaceInput)
-    Vue.component('GmapStreetViewPanorama', StreetViewPanorama)
+    app.component('GmapMap', Map)
+    app.component('GmapMarker', Marker)
+    app.component('GmapInfoWindow', InfoWindow)
+    app.component('GmapKmlLayer', KmlLayer)
+    app.component('GmapPolyline', Polyline)
+    app.component('GmapPolygon', Polygon)
+    app.component('GmapCircle', Circle)
+    app.component('GmapRectangle', Rectangle)
+    app.component('GmapAutocomplete', Autocomplete)
+    app.component('GmapPlaceInput', PlaceInput)
+    app.component('GmapStreetViewPanorama', StreetViewPanorama)
   }
 }
 
