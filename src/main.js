@@ -1,6 +1,6 @@
 import loadGmapApi from './manager/initializer'
 import promiseLazyFactory from './factories/promise-lazy'
-import { reactive } from 'vue';
+import { ref } from 'vue';
 
 import KmlLayer from './components/kml-layer'
 import Marker from './components/marker'
@@ -52,7 +52,7 @@ export function install (app, options) {
   // via:
   //   import {gmapApi} from 'vue2-google-maps'
   //   export default {  computed: { google: gmapApi }  }
-  GmapApi = reactive({ data: { gmapApi: null } })
+  GmapApi = ref({ data: { gmapApi: null } })
 
   // TODO: replace event bus pattern
   // const defaultResizeBus = new Vue()
